@@ -188,7 +188,7 @@ const Cryptocurrencies = () => {
         <div
         className='bg-white text-black'
         >
-            
+
        
         
         <div className='pt-[30px]'>
@@ -205,7 +205,7 @@ const Cryptocurrencies = () => {
             />
               
             </div>
-            <div className=" flex flex-wrap border-gray-400 py-[40px] pt-5 rounded-md bg-gray-50 items-center gap-[10px]">
+            <div className=" flex flex-wrap border-gray-400 rounded-md bg-gray-50 items-center gap-[10px]">
                 <div
                 className='px-9'
                 ><h1
