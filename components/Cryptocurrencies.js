@@ -188,49 +188,8 @@ const Cryptocurrencies = () => {
         <div
         className='bg-white text-black'
         >
-            <div className='flex px-3 flex-wrap gap-[120px]'>
-                <div className='flex items-center gap-[10px]'>
-                <div className='flex items-center gap-[10px]'>
-                    <h1
-                      className='font-bold text-gray-400'
-                    >Cryptocurrencies</h1>
-                    
-                    <h1>{cryptoStats.totalCoins}</h1>
-                </div>
-
-                <div className='flex items-center gap-[10px]'>
-                
-                    <h1
-                      className='font-bold text-gray-400'
-                    >Markets</h1>
-                    <h1>{cryptoStats.totalMarkets}</h1>
-                </div>
-
-                </div>
-
-                <div className='flex items-center gap-[10px]'>
-                    <div className='flex gap-2 '>
-                        <h1
-                        className='font-bold text-gray-400'
-                        >Market Price</h1>
-                        <h1>{cryptoStats.totalMarketCap}</h1>
-
-                    </div>
-                    <div className='flex gap-2 '>
-                        <h1
-                          className='font-bold text-gray-400'
-                        >Volume 24h</h1>
-                        <h1>{cryptoStats.total24hVolume}</h1>
-                        
-                    </div>
-                    <div className='flex gap-2 '>
-                        <h1
-                          className='font-bold text-gray-400'
-                        >BTC Dominance</h1>
-                    </div>
-            </div>
-            </div>
-
+            
+       
         
         <div className='pt-[30px]'>
             <div className="flex items-center px-[30px] gap-[10px]">
