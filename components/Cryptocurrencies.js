@@ -7,6 +7,7 @@ import axios from 'axios'
 import {Convert,getCurrencyList} from '@/Convert'
 import Image from 'next/image'
 import { SearchOutlined } from '@ant-design/icons'
+import CryptoStat from './CryptoStat'
 
 
 
@@ -183,16 +184,30 @@ const Cryptocurrencies = () => {
     }))
     
    const item='Search'
+console.log(cryptoStats)
 
     return (
         <div
-        className='bg-white text-black'
+        className='bg-slate-100 text-black'
         >
+            {cryptoStats && <CryptoStat
+            cryptocurrencies={cryptoStats?.totalCoins}
+            marketCap={cryptoStats?.totalMarketCap}
+            markets={cryptoStats?.totalMarkets}
+            volume24h={cryptoStats?.total24hVolume}
+            exchanges={cryptoStats?.totalExchanges}
+            />
+}
+
+
+
+
+            
 
        
         
         <div className='pt-[30px]'>
-            <div className="flex items-center px-[30px] gap-[10px]">
+            <div className="flex items-center px-[30px] ml-2 gap-[10px]">
             <Image src='/CRYPTO.png' width={200} height={200} alt='cryptpo' />
             
             <Input
@@ -205,7 +220,7 @@ const Cryptocurrencies = () => {
             />
               
             </div>
-            <div className=" flex flex-wrap border-gray-400 rounded-md bg-gray-50 items-center gap-[10px]">
+            <div className=" flex flex-wrap border-gray-400 pt-5 mx-10 rounded-md bg-gray-50 items-center gap-[10px]">
                 <div
                 className='px-9'
                 ><h1
@@ -217,7 +232,7 @@ const Cryptocurrencies = () => {
                 </div>
 
             </div>
-              <div className='rounded-xl pt-4 mx-[40px] shadow-2xl px-4'>
+              <div className='rounded-xl my-5 pt-4 mx-[40px] shadow-2xl px-4'>
             <div className="flex flex-wrap gap-[10px] mt-[20px]">
                 {categoriesBar}
             </div>
