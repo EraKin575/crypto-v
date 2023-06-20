@@ -8,10 +8,11 @@ import {Convert,getCurrencyList} from '@/Convert'
 import Image from 'next/image'
 import { SearchOutlined } from '@ant-design/icons'
 import CryptoStat from './CryptoStat'
-
+import { useRouter } from 'next/navigation'
 
 
 const Cryptocurrencies = () => {
+    const router=useRouter()
  
     const [from,setFrom]=useState()
 
@@ -188,8 +189,9 @@ console.log(cryptoStats)
 
     return (
         <div
-        className='bg-slate-100 text-black'
-        >
+        className='bg-slate-100 px-[30px] text-black'
+        > 
+        <div className="flex flex-wrap items-center justify-between">
             {cryptoStats && <CryptoStat
             cryptocurrencies={cryptoStats?.totalCoins}
             marketCap={cryptoStats?.totalMarketCap}
@@ -198,6 +200,7 @@ console.log(cryptoStats)
             exchanges={cryptoStats?.totalExchanges}
             />
 }
+</div>
 
 
 
@@ -207,7 +210,7 @@ console.log(cryptoStats)
        
         
         <div className='pt-[30px]'>
-            <div className="flex items-center px-[30px] ml-2 gap-[10px]">
+            <div className="flex items-center gap-[10px]">
             <Image src='/CRYPTO.png' width={200} height={200} alt='cryptpo' />
             
             <Input
@@ -220,7 +223,7 @@ console.log(cryptoStats)
             />
               
             </div>
-            <div className=" flex flex-wrap border-gray-400 pt-5 mx-10 rounded-md bg-gray-50 items-center gap-[10px]">
+            <div className=" flex flex-wrap border-gray-400 pt-5 rounded-md bg-gray-50 items-center gap-[10px]">
                 <div
                 className='px-9'
                 ><h1
@@ -232,7 +235,7 @@ console.log(cryptoStats)
                 </div>
 
             </div>
-              <div className='rounded-xl my-5 pt-4 mx-[40px] shadow-2xl px-4'>
+              <div className='rounded-xl my-5 pt-4 shadow-2xl px-3'>
             <div className="flex flex-wrap gap-[10px] mt-[20px]">
                 {categoriesBar}
             </div>
@@ -240,6 +243,12 @@ console.log(cryptoStats)
           
 
             <Table
+            onRow={(record, rowIndex) => {
+                return {
+                    onClick: event => {router.push("/cryptocurrencies"+"/coin/"+record.key)},
+                }
+            }
+            }
             dataSource={cryptoCoins}
             columns={columns}
             orderBy={queryParams.orderBy}
