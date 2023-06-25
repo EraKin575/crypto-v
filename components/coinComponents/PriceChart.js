@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+import { Chart as ChartJS, TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import 'chartjs-adapter-moment';
+import moment from 'moment';
+ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 import axios from 'axios';
 
@@ -27,7 +29,7 @@ const PriceChart = () => {
           headers: headers,
           params: params
         });
-        setCoinHistory(response.data.history);
+        setCoinHistory(response.data);
       } catch (error) {
         console.error('Error fetching coin history:', error);
       }
@@ -40,38 +42,78 @@ const PriceChart = () => {
     <p1
       key={timePeriod}
       onClick={() => setTimePeriod(timePeriod)}
-      className="cursor-pointer w-[40px]  text-lg mx-[5px] text-center font-bold rounded-lg hover:bg-blue-300 text-gray-500 hover:text-blue-600"
+      className={`cursor-pointer w-[40px] text-md ${timePeriod!='5y' && `border-r-[0.5px]`} border-solid border-gray-500 text-center font-bold hover:bg-blue-300 ${
+        global.timePeriod === timePeriod ? 'text-blue-600' : 'text-gray-500'
+      }`}
     >
       {timePeriod}
     </p1>
   ));
 
-  const [coinData, setCoinData] = useState({
-    coinPrice: [],
-    coinTimeStamp: []
-  });
+  let coinPrice = [];
+  let coinTimestamp = [];
+  for (let i = 0; i < coinPriceHistory?.data?.history?.length; i++) {
+    coinPrice.push(coinPriceHistory?.data?.history[i]?.price);
+    coinTimestamp.push(moment(coinPriceHistory?.data?.history[i]?.timestamp * 1000));
+  }
 
-  useEffect(() => {
-    const coinPriceData = [];
-    const coinTimestampData = [];
-    for (let i = 0; i < coinPriceHistory.length; i += 1) {
-      coinPriceData.push(coinPriceHistory[i].price);
-      coinTimestampData.push(new Date(coinPriceHistory[i].timestamp).toLocaleDateString());
+  const getTimeUnit = (timePeriod) => {
+    if (timePeriod === '1h') {
+      return 'hour';
+    } else if (timePeriod === '3h') {
+      return 'hour';
+    } else if (timePeriod === '12h') {
+      return 'hour';
+    } else if (timePeriod === '24h') {
+      return 'hour';
+    } else if (timePeriod === '7d') {
+      return 'day';
+    } else if (timePeriod === '30d') {
+      return 'day';
+    } else if (timePeriod === '3m') {
+      return 'month';
+    } else if (timePeriod === '1y') {
+      return 'year';
+    } else if (timePeriod === '3y') {
+      return 'year';
+    } else if (timePeriod === '5y') {
+      return 'year';
+    } else {
+      return 'day';
     }
-    setCoinData({
-      coinPrice: coinPriceData,
-      coinTimeStamp: coinTimestampData,
-    });
-  }, [coinPriceHistory]);
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: getTimeUnit(timePeriod),
+        },
+        ticks: {
+          source: 'auto',
+        },
+      },
+    },
+  };
+
+  const chartContainerStyle = {
+    width: '800px',
+    height: '600px',
+  };
 
   const chartData = {
-    labels: coinData.coinTimeStamp,
+    labels: coinTimestamp,
     datasets: [
       {
+        radius: 0,
         label: 'Price In USD',
-        data: coinData.coinPrice,
+        data: coinPrice,
         backgroundColor: '#0071bd',
         borderColor: '#0071bd',
+        borderWidth: 2,
       },
     ],
   };
@@ -79,13 +121,12 @@ const PriceChart = () => {
   return (
     <div>
       <h1>Price Chart</h1>
-      <div className="flex bg-gray-200 w-min rounded-md">
-        {timeSelector}
+      <div className="flex bg-gray-200 rounded-lg w-min">{timeSelector}</div>
+      <div style={chartContainerStyle}>
+        <Line data={chartData} options={chartOptions} />
       </div>
-      <Line data={chartData} />
     </div>
   );
-}
+};
 
 export default PriceChart;
-
