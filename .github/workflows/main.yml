@@ -16,15 +16,16 @@ jobs:
       - name: npm installation
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-
-      - name: Checkout repository
+          node-version: '20.x'
+    
+      - name: Checking out
         uses: actions/checkout@v2
+        
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v1
+        uses: kitabisa/sonarqube-action@v1.2.0
         with:
-          host: 'http://3.87.9.234/'
+          host: http://3.87.9.234/
           login: ${{ secrets.SONAR_TOKEN }}
           projectBaseDir: .
           projectName: crypto-v
@@ -35,18 +36,20 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_IAM_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_IAM_ACCESS_SECRET_KEY }}
-          aws-region: 'us-east-1'
+          aws-region: us-east-1
 
-      - name: Login to Amazon ECR
+      - name: Login to Amazon ECR 
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build and Push Docker image
         id: build-image
+        
         env:
           ECR_REGISTRY: 666484523613.dkr.ecr.us-east-1.amazonaws.com
           IMAGE_NAME: crypto-v
           TAG: ${{ github.sha }}
+      
         run: |
           docker build -t $ECR_REGISTRY/$IMAGE_NAME:$TAG .
           docker push $ECR_REGISTRY/$IMAGE_NAME:$TAG
@@ -54,10 +57,18 @@ jobs:
       - name: Deploy to ECS
         id: deploy-to-ecs
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: crypto-v-tdf
-          service: crypto-v-service-1
-          cluster: crypto-v-cluster
-          container-name: crypto-v
-          container-image: ${{ env.ECR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-          wait-for-service-stability: 'true'
+        env:
+          AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
+          ECR_REPOSITORY: 666484523613.dkr.ecr.us-east-1.amazonaws.com/crypto-v         # set this to your Amazon ECR repository name
+          ECS_SERVICE: crypto-v-service-1          # set this to your Amazon ECS service name
+          ECS_CLUSTER: crypto-v-cluster                 # set this to your Amazon ECS cluster name
+          ECS_TASK_DEFINITION: crypto-v-tdf # set this to the path to your Amazon ECS task definition
+                                                       # file, e.g. .aws/task-definition.json
+          CONTAINER_NAME: crypto-v           # set this to the name of the container in the
+                                                       # containerDefinitions section of your task definition
+         
+
+
+       
+
+
