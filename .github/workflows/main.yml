@@ -57,7 +57,7 @@ jobs:
 
       - name: Deploy to ECS
         id: deploy-to-ecs
-        uses: appleboy/ecs-deploy@master
+        uses: uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
         env:
           AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
           ECR_REPOSITORY: 666484523613.dkr.ecr.us-east-1.amazonaws.com/crypto-v         # set this to your Amazon ECR repository name
