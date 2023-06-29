@@ -47,7 +47,7 @@ jobs:
         id: build-image
         
         env:
-          ECR_REGISTRY: 666484523613.dkr.ecr.us-east-1.amazonaws.com/crypto-v
+          ECR_REGISTRY: 666484523613.dkr.ecr.us-east-1.amazonaws.com
           IMAGE_NAME: crypto-v
           TAG: ${{ github.sha }}
       
