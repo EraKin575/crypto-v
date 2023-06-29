@@ -26,7 +26,7 @@ jobs:
       - name: SonarQube Scan
         uses: kitabisa/sonarqube-action@v1.2.0
         with:
-          host: http://172.31.93.139/
+          host: http://44.202.110.132/
           login: ${{ secrets.SONAR_TOKEN }}
           projectBaseDir: .
           projectName: crypto-v
