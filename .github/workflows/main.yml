@@ -51,8 +51,8 @@ jobs:
           IMAGE_NAME: crypto-v
           TAG: ${{ github.sha }}
       
-       run: |
-        docker build -t $ECR_REGISTRY/$IMAGE_NAME:$TAG .
-        docker push $ECR_REGISTRY/$IMAGE_NAME:$TAG
+        run: |
+          docker build -t $ECR_REGISTRY/$IMAGE_NAME:$TAG .
+          docker push $ECR_REGISTRY/$IMAGE_NAME:$TAG
 
 
